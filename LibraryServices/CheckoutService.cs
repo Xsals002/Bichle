@@ -148,7 +148,7 @@ namespace LibraryServices
             _context.SaveChanges();
         }
 
-        private void CheckoutToEarliestHold(int assetId, IQueryable<Hold> currentHolds)
+        private void CheckoutToEarliestHold(int assetId, IEnumerable<Hold> currentHolds)
         {
             var earliestHold = currentHolds.OrderBy(a => a.HoldPlaced).FirstOrDefault();
             if (earliestHold == null) return;
@@ -159,24 +159,24 @@ namespace LibraryServices
             CheckOutItem(assetId, card.Id);
         }
 
-        public void CheckOutItem(int assetId, int libraryCardId)
+        public void CheckOutItem(int id, int libraryCardId)
         {
-            var now = DateTime.Now;
-
-            if (IsCheckedOut(assetId))
-            {
-                return;
-                // Add logic to handle feedback to the user
-            }
+            if (IsCheckedOut(id)) return;
 
             var item = _context.LibraryAssets
-                .FirstOrDefault(h => h.Id == assetId);
+                .Include(a => a.Status)
+                .First(a => a.Id == id);
 
-            UpdateAssetStatus(assetId, "Checked Out");
+            _context.Update(item);
+
+            item.Status = _context.Statuses
+                .FirstOrDefault(a => a.Name == "Checked Out");
+
+            var now = DateTime.Now;
 
             var libraryCard = _context.LibraryCards
-                .Include(card => card.Checkouts)
-                .FirstOrDefault(card => card.Id == assetId);
+                .Include(c => c.Checkouts)
+                .FirstOrDefault(a => a.Id == libraryCardId);
 
             var checkout = new Checkout
             {
@@ -221,6 +221,8 @@ namespace LibraryServices
 
             var card = _context.LibraryCards
                 .FirstOrDefault(c => c.Id == libraryCardId);
+
+            _context.Update(asset);
 
             if (asset.Status.Name == "Available")
             {

@@ -27,7 +27,7 @@
 }
 
 .splash {
-    background-image: url("/images/catalog.png");
+    background-image: url("/images/index.png");
     background-repeat: no-repeat;
     min-height: 200px;
 }
@@ -68,7 +68,8 @@
 }
 
 #catalog {
-    background: url('/images/books.jpg') bottom right 15% no-repeat #555;
+    background: url('/images/index.png') bottom right 15% no-repeat #555;
+    background-size: 320px 219px;
 }
 
 #catalogIndexTable {
@@ -84,7 +85,8 @@
     }
 
 #patrons {
-    background: url('/images/patron.jpeg') bottom left 15% no-repeat #555;
+    background: url('/images/index.png') bottom left 15% no-repeat #555;
+    background-size: 320px 219px;
 }
 
 .branchInfo {
@@ -92,7 +94,8 @@
 }
 
 #branches {
-    background: url('/images/bldg.jpeg') bottom right 15% no-repeat #555;
+    background: url('/images/index.png') bottom right 15% no-repeat #555;
+    background-size: 320px 219px;
 }
 
 #assets {

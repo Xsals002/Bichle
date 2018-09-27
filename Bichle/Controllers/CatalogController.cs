@@ -92,7 +92,7 @@ namespace Bichle.Controllers
         public IActionResult CheckIn(int id)
         {
             _checkouts.CheckInItem(id);
-            return RedirectToAction("Detail", new { id = id });
+            return RedirectToAction("Detail", new { id });
         }
 
         public IActionResult MarkFound(int assetId)
